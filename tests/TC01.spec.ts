@@ -6,7 +6,7 @@ import { HomePage } from 'page-objects/home.page';
 import { CartPage } from 'page-objects/cart.page';
 import { CheckOutPage } from 'page-objects/checkOut.page';
 
-test('users can buy an item successfully', async ({ page }) => {
+test('TC_01 : users can buy an item successfully', async ({ page }) => {
   await CommonActions.navigateToPage(page);
   const loginPage = new LoginPage(page);
   const homePage = new HomePage(page);
