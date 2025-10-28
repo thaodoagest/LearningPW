@@ -1,5 +1,4 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { time } from "console";
 
 export class CheckOutPage {
     placeOrderButton: Locator = this.page.getByRole('button', { name: 'PLACE ORDER' });
@@ -24,6 +23,7 @@ export class CheckOutPage {
         zipCode: string,
         phone: string,
         email: string
+        payMentMethod?: string
     }) {
         await this.firstNameInput.fill(details.firstName);
         await this.lastNameInput.fill(details.lastName);
@@ -33,6 +33,7 @@ export class CheckOutPage {
         await this.zipCodeInput.fill(details.zipCode);
         await this.phoneInput.fill(details.phone);
         await this.emailInput.fill(details.email);
+        await this.page.getByRole('radio', { name: details.payMentMethod }).check();
     }
 
     async placeOrder() {
@@ -50,18 +51,32 @@ export class CheckOutPage {
         zipCode: string,
         phone: string,
         email: string
+        payMentMethod?: string
     }) {
         await this.page.waitForTimeout(2000);
         await expect(this.orderConfirmation).toBeVisible();
         await expect(this.page.getByRole('link', { name: orderdetails.itemName })).toBeVisible();
-
         await expect(this.page.getByText(orderdetails.phone)).toBeVisible();
         await expect(this.page.getByRole('paragraph').filter({ hasText: orderdetails.email })).toBeVisible();
-
         await expect(this.page.getByText(orderdetails.name)).toBeVisible();
         await expect(this.page.getByText(orderdetails.street)).toBeVisible();
-
         await expect(this.page.getByText(orderdetails.city)).toBeVisible();
+        await expect(this.page.getByRole('cell', { name: orderdetails.payMentMethod })).toBeVisible();
+
+    }
+
+
+    async verifymultipleProducts(itemName: string, quantity: number) {
+        const items = this.page.getByRole('cell', { name: itemName + ' × ' + quantity });
+        await expect(items).toBeVisible();
+
+    }
+
+    async verifymultipleProductsInOrder(items: { name: string; quantity: number }[]) {
+        for (const item of items) {
+            await this.verifymultipleProducts(item.name, item.quantity);
+        }
+
     }
 
 }

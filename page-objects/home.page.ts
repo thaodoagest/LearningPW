@@ -9,7 +9,7 @@ export class HomePage {
     gridButton: Locator = this.page.locator('.switch-grid');
     listButton: Locator = this.page.locator('.switch-list');
     cartLink: Locator = this.page.getByRole('link').filter({ hasText: '$' }).getByRole('img').first();
-
+    
     constructor(private page: Page) {
     };
 
@@ -20,6 +20,13 @@ export class HomePage {
         await expect(department).toBeVisible();
         await department.click();
     }
+
+    async selectMenuItem(menuItem: string) {
+        const menu = this.page.getByRole('link', { name: menuItem }).first();
+        await expect(menu).toBeVisible();
+        await menu.click();
+    }
+
 
     async switchView(view: string) {
         await this.page.waitForTimeout(2000);

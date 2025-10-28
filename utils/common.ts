@@ -1,7 +1,7 @@
 import { Page, expect } from '@playwright/test';
 import { CONFIG } from './config';
 
-export class CommonActions {
+export class Common {
 
     static async navigateToPage(page: Page) {
         await page.goto(CONFIG.Url);
