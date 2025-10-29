@@ -13,7 +13,7 @@ test('TC_01 : users can buy an item successfully', async ({ page, loggedInPage }
   const productName = "DJI Mavic Pro Camera Drone";
 
 
-  await homePage.selectDepartment("Electronic Components & Supplies");
+  await homePage.selectDepartment("Car Electronics");
   await homePage.switchView("List");
   await homePage.verifyViewIs("List");
   await homePage.addItemToCart(productName);

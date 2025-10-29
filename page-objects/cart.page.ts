@@ -11,7 +11,6 @@ export class CartPage {
     }
 
     async checkout() {
-        await expect(this.checkoutButton).toBeVisible();
         await this.checkoutButton.click();
     }
 

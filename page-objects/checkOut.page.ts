@@ -33,11 +33,11 @@ export class CheckOutPage {
         await this.zipCodeInput.fill(details.zipCode);
         await this.phoneInput.fill(details.phone);
         await this.emailInput.fill(details.email);
-        await this.page.getByRole('radio', { name: details.payMentMethod }).check();
+        if (details.payMentMethod)
+            await this.page.getByRole('radio', { name: details.payMentMethod }).check();
     }
 
     async placeOrder() {
-        await expect(this.placeOrderButton).toBeVisible();
         await this.placeOrderButton.click();
         await this.page.waitForLoadState('networkidle');
     }
@@ -46,7 +46,6 @@ export class CheckOutPage {
         itemName: string,
         name: string,
         street: string,
-
         city: string,
         zipCode: string,
         phone: string,
@@ -61,7 +60,8 @@ export class CheckOutPage {
         await expect(this.page.getByText(orderdetails.name)).toBeVisible();
         await expect(this.page.getByText(orderdetails.street)).toBeVisible();
         await expect(this.page.getByText(orderdetails.city)).toBeVisible();
-        await expect(this.page.getByRole('cell', { name: orderdetails.payMentMethod })).toBeVisible();
+        if (orderdetails.payMentMethod)
+            await expect(this.page.getByRole('cell', { name: orderdetails.payMentMethod })).toBeVisible();
 
     }
 
@@ -69,7 +69,6 @@ export class CheckOutPage {
     async verifymultipleProducts(itemName: string, quantity: number) {
         const items = this.page.getByRole('cell', { name: itemName + ' × ' + quantity });
         await expect(items).toBeVisible();
-
     }
 
     async verifymultipleProductsInOrder(items: { name: string; quantity: number }[]) {

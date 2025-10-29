@@ -16,9 +16,7 @@ export const test = base.extend<{
         await Common.navigateToPage(page);
         await loginPage.logIn(CONFIG.CREDENTIALS.USERNAME, CONFIG.CREDENTIALS.PASSWORD);
         await use();
-
     },
     
-
 });
 export { expect } from '@playwright/test';

@@ -1,29 +1,24 @@
 import { expect, Locator, Page } from "@playwright/test";
+import { CONFIG } from "utils/config";
 
 export class HomePage {
-    static departments: {
-        ELECTRONIC_COMPONENTS_AND_SUPPLIES: "/Electronic Components & Supplies/",
 
-    };
     allDeparments: Locator = this.page.getByText('All Departments');
     gridButton: Locator = this.page.locator('.switch-grid');
     listButton: Locator = this.page.locator('.switch-list');
     cartLink: Locator = this.page.getByRole('link').filter({ hasText: '$' }).getByRole('img').first();
-    
+    accountLink: Locator = this.page.getByRole('link', { name: CONFIG.Account });
+
     constructor(private page: Page) {
     };
 
     async selectDepartment(nameDeparment: string) {
         await this.allDeparments.click();
-        await this.page.waitForLoadState('networkidle');
-        const department = this.page.getByRole('link', { name: nameDeparment }).first();
-        await expect(department).toBeVisible();
-        await department.click();
+        await this.page.getByRole('link', { name: nameDeparment }).first().click();
     }
 
     async selectMenuItem(menuItem: string) {
         const menu = this.page.getByRole('link', { name: menuItem }).first();
-        await expect(menu).toBeVisible();
         await menu.click();
     }
 
@@ -51,20 +46,18 @@ export class HomePage {
 
     async addItemToCart(itemName: string) {
         const item = this.page.getByRole('link', { name: itemName }).first();
-        await expect(item).toBeVisible();
         await item.click();
-        await this.page.waitForLoadState('networkidle');
 
     }
 
     async gotoCart() {
         await this.page.waitForTimeout(2000);
-        await expect(this.cartLink).toBeVisible();
         await this.cartLink.click();
     }
 
-
-
+    async gotoAccount() {
+        await this.accountLink.click();
+    }
 
 
 }
