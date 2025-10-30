@@ -8,21 +8,24 @@ export class MyAccountPage {
     orderTable: Locator = this.page.locator('table.shop_table');
 
     constructor(private page: Page) {
-    }   
+    }
     async gotoRecentOrders() {
         await this.recentOrdersLink.click();
 
     }
 
-    async verifyOrderS(orderNumber: number) {
-        const rowCount = this.orderTable.locator('tbody tr').count();
+    async verifyOrderS(expectedCount: number) {
+        // wait for table to appear
+        await expect(this.orderTable).toBeVisible({ timeout: 5000 });
 
-        log("Number of orders found: " + rowCount);
-        log(rowCount.toString());
+        // get rows inside tbody (exclude header)
+        const orderRows = this.orderTable.locator('tbody tr');
+        const actualCount = await orderRows.count();
 
-        //await expect(rowCount).toBeGreaterThanOrEqual(orderNumber)
-         //this.orderTable.locator('tbody tr').count();
-        //const order = this.orderTable.getByRole('link', { name: orderNumber });
+        log(`Found ${actualCount} orders in order history.`);
+
+        // assert minimum count
+        await expect(actualCount).toBeGreaterThanOrEqual(expectedCount);
     }
 
 }
