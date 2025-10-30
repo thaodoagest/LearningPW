@@ -66,16 +66,30 @@ export class CheckOutPage {
     }
 
 
-    async verifymultipleProducts(itemName: string, quantity: number) {
+    async verifyProductsInOrder(itemName: string, quantity: number) {
         const items = this.page.getByRole('cell', { name: itemName + ' × ' + quantity });
         await expect(items).toBeVisible();
     }
 
     async verifymultipleProductsInOrder(items: { name: string; quantity: number }[]) {
+        await expect(this.orderConfirmation).toBeVisible();
         for (const item of items) {
-            await this.verifymultipleProducts(item.name, item.quantity);
+            await this.verifyProductsInOrder(item.name, item.quantity);
         }
+    }
 
+    async getErrorMessages() {
+        const errorMessages = this.page.getByRole('alert').locator('li');
+        const messages = [];
+        const count = await errorMessages.count();
+        for (let i = 0; i < count; i++) {
+            messages.push(await errorMessages.nth(i).innerText());
+        }
+        return messages;
+    }
+
+    async verifyErrorMessage(expectedMessage: string) {
+        await expect(this.getErrorMessages()).toContain(expectedMessage);
     }
 
 }

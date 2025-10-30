@@ -1,5 +1,4 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { log } from "console";
 
 export class MyAccountPage {
 
