@@ -11,20 +11,11 @@ export class MyAccountPage {
     }
     async gotoRecentOrders() {
         await this.recentOrdersLink.click();
-
     }
 
     async verifyOrderS(expectedCount: number) {
-        // wait for table to appear
-        await expect(this.orderTable).toBeVisible({ timeout: 5000 });
-
-        // get rows inside tbody (exclude header)
         const orderRows = this.orderTable.locator('tbody tr');
         const actualCount = await orderRows.count();
-
-        log(`Found ${actualCount} orders in order history.`);
-
-        // assert minimum count
         await expect(actualCount).toBeGreaterThanOrEqual(expectedCount);
     }
 
