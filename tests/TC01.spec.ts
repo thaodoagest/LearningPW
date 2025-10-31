@@ -1,17 +1,18 @@
-import { expect, test } from 'utils/fixtures';
-import { CONFIG } from 'utils/config';
-import { HomePage } from 'page-objects/home.page';
-import { CartPage } from 'page-objects/cart.page';
-import { CheckOutPage } from 'page-objects/checkOut.page';
+import { expect, test } from "utils/fixtures";
+import { CONFIG } from "utils/config";
+import { HomePage } from "page-objects/home.page";
+import { CartPage } from "page-objects/cart.page";
+import { CheckOutPage } from "page-objects/checkOut.page";
 
-test('TC_01 : users can buy an item successfully', async ({ page, loggedInPage }) => {
-
+test("TC_01 : users can buy an item successfully", async ({
+  page,
+  loggedInPage,
+}) => {
   const homePage = new HomePage(page);
   const cartPage = new CartPage(page);
   const checkOutPage = new CheckOutPage(page);
 
   const productName = "DJI Mavic Pro Camera Drone";
-
 
   await homePage.selectDepartment("Car Electronics");
   await homePage.switchView("List");
@@ -28,7 +29,7 @@ test('TC_01 : users can buy an item successfully', async ({ page, loggedInPage }
     city: CONFIG.Customer.CITY,
     zipCode: CONFIG.Customer.ZIP_CODE,
     phone: CONFIG.Customer.PHONE,
-    email: CONFIG.Customer.EMAIL
+    email: CONFIG.Customer.EMAIL,
   });
 
   await checkOutPage.placeOrder();
@@ -39,7 +40,6 @@ test('TC_01 : users can buy an item successfully', async ({ page, loggedInPage }
     city: CONFIG.Customer.CITY,
     zipCode: CONFIG.Customer.ZIP_CODE,
     phone: CONFIG.Customer.PHONE,
-    email: CONFIG.Customer.EMAIL
+    email: CONFIG.Customer.EMAIL,
   });
 });
-
