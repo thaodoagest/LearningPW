@@ -7,7 +7,7 @@ export class CartPage {
 
   constructor(private page: Page) {}
 
-  async verifyItemInCart(itemName: string , numberOfItems?: number) {
+  async verifyItemInCart(itemName: string, numberOfItems?: number) {
     const itemInCart = this.page.getByRole("link", { name: itemName }).first();
     await expect(itemInCart).toBeVisible();
     if (numberOfItems) {
@@ -61,9 +61,9 @@ export class CartPage {
       await this.page
         .getByRole("row")
         .filter({ hasText: itemName })
-        .locator('.plus')
+        .locator(".plus")
         .click();
-    } 
+    }
   }
 
   async getSubTotalNumber(itemName: string): Promise<number> {
@@ -80,17 +80,14 @@ export class CartPage {
     return parseFloat(subTotal);
   }
 
-  async verifySubTotal(expectedTotal : string)
-  {
+  async verifySubTotal(expectedTotal: string) {
     const expected = expectedTotal.toString();
-    await  expect(this.page
-      .getByRole("row")
-      .filter({ hasText: "AirPods" })
-      .locator(".product-subtotal")
-      .filter({ hasText : expected })).toBeVisible();
-
-    
+    await expect(
+      this.page
+        .getByRole("row")
+        .filter({ hasText: "AirPods" })
+        .locator(".product-subtotal")
+        .filter({ hasText: expected })
+    ).toBeVisible();
   }
-
-   
 }
