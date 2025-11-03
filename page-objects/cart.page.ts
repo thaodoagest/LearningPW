@@ -1,5 +1,5 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { log } from "console";
+
 export class CartPage {
   checkoutButton: Locator = this.page.getByRole("link", {
     name: "PROCEED TO CHECKOUT",
@@ -57,11 +57,23 @@ export class CartPage {
   }
 
   async addItemQuantity(itemName: string, incrementBy: number) {
+    await this.page.waitForTimeout(3000);
     for (let i = 0; i < incrementBy; i++) {
       await this.page
         .getByRole("row")
         .filter({ hasText: itemName })
         .locator(".plus")
+        .click();
+    }
+  }
+
+  async subtractItemQuantity(itemName: string, decrementBy: number) {
+    await this.page.waitForTimeout(3000);
+    for (let i = 0; i < decrementBy; i++) {
+      await this.page
+        .getByRole("row")
+        .filter({ hasText: itemName })
+        .locator(".minus")
         .click();
     }
   }
@@ -80,14 +92,18 @@ export class CartPage {
     return parseFloat(subTotal);
   }
 
-  async verifySubTotal(expectedTotal: string) {
-    const expected = expectedTotal.toString();
+  async verifySubTotal(itemName: string, expectedTotal: string) {
+    //const expected = expectedTotal.toString();
+    await this.page.waitForTimeout(3000);
     await expect(
       this.page
         .getByRole("row")
-        .filter({ hasText: "AirPods" })
+        .filter({ hasText: itemName })
         .locator(".product-subtotal")
-        .filter({ hasText: expected })
+        .filter({ hasText: expectedTotal })
     ).toBeVisible();
   }
+
+  
+  
 }

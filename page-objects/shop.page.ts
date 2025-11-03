@@ -14,10 +14,12 @@ export class ShopPage {
       exact: true,
     });
     await itemCard.click();
-    const quantityInput = this.page.getByRole("spinbutton", {
-      name: itemName + " quantity",
-    });
-    await quantityInput.fill(quantity.toString());
+    if (quantity > 1) {
+      const quantityInput = this.page.getByRole("spinbutton", {
+        name: itemName + " quantity",
+      });
+      await quantityInput.fill(quantity.toString());
+    }
     await this.addToCartButton.click();
     await this.page.goBack();
   }
