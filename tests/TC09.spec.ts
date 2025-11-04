@@ -3,6 +3,11 @@ import { HomePage } from "page-objects/home.page";
 import { ShopPage } from "page-objects/shop.page";
 import { CartPage } from "page-objects/cart.page";
 
+test.afterEach('clear all cart', async () => {
+  // Add cart cleanup logic here if needed
+  
+});
+
 test("TC09 - users can update quantity of product in cart", async ({
   page,
   loggedInPage,

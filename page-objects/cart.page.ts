@@ -5,6 +5,7 @@ export class CartPage {
   checkoutButton: Locator = this.page.getByRole("link", {
     name: "PROCEED TO CHECKOUT",
   });
+  removeLink : Locator = this.page.getByRole('link', {name : "Remove"});
 
   constructor(private page: Page) {}
 
@@ -31,6 +32,17 @@ export class CartPage {
       .getByRole("link", { name: "Remove" });
     await removeButton.click();
   }
+
+  async removeAllCart()
+  {
+    const removeLinkCount = this.removeLink.count();
+    for(let i =1 ; i < await removeLinkCount; i++)
+    {
+      this.removeLink.first().click();
+      await this.page.waitForTimeout(5000);
+    }
+
+    }
 
   async verifyCartIsEmpty() {
     await expect(
