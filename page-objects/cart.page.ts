@@ -1,5 +1,6 @@
 import { expect, Locator, Page } from "@playwright/test";
 
+
 export class CartPage {
   checkoutButton: Locator = this.page.getByRole("link", {
     name: "PROCEED TO CHECKOUT",
@@ -45,6 +46,7 @@ export class CartPage {
     await quantityLocator.fill(quantity.toString());
     // Click outside to trigger update
     await this.page.click("body");
+    await this.page.waitForTimeout(3000)
   }
 
   async getItemQuantity(itemName: string): Promise<number> {
@@ -74,11 +76,12 @@ export class CartPage {
         .getByRole("row")
         .filter({ hasText: itemName })
         .locator(".minus")
-        .click();
+        .click({timeout:5000});
     }
   }
 
   async getSubTotalNumber(itemName: string): Promise<number> {
+    await this.page.waitForTimeout(5000);
     const subTotalText = await this.page
       .getByRole("row")
       .filter({ hasText: itemName })
@@ -88,20 +91,13 @@ export class CartPage {
     if (!subTotalText) {
       throw new Error(`Subtotal text not found for item: ${itemName}`);
     }
-    const subTotal = subTotalText.replace(/[^\d.,-]/g, "");
+    const subTotal = subTotalText.replace(/[^\d.-]/g, "");
     return parseFloat(subTotal);
   }
 
-  async verifySubTotal(itemName: string, expectedTotal: string) {
-    //const expected = expectedTotal.toString();
-    await this.page.waitForTimeout(3000);
-    await expect(
-      this.page
-        .getByRole("row")
-        .filter({ hasText: itemName })
-        .locator(".product-subtotal")
-        .filter({ hasText: expectedTotal })
-    ).toBeVisible();
+  async verifySubTotal(itemName: string, expectedTotal: number) {
+    const subTotal = await this.getSubTotalNumber(itemName);
+    expect(subTotal).toEqual(expectedTotal);
   }
 
   
